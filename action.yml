@@ -1,6 +1,9 @@
 name: 'Secret Scanner'
 author: 'GarnerCorp'
 description: 'Scan for secrets in a repository'
+branding:
+  icon: 'eye'
+  color: 'orange'
 
 inputs:
   detect-secrets-version:
