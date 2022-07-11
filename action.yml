@@ -1,0 +1,31 @@
+name: 'Secret Scanner'
+author: 'GarnerCorp'
+description: 'Scan for secrets in a repository'
+branding:
+  icon: 'eye'
+  color: 'orange'
+
+inputs:
+  detect-secrets-version:
+    description: 'The version of Yelp/detect-secrets to use'
+    required: false
+    default: '1.2.0'
+  baseline-file:
+    description: "A path to the baseline secrets file"
+    required: false
+    default: .secrets.baseline
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set-up python
+      uses: actions/setup-python@v4
+    - name: Install detect-secrets
+      run: pip install detect-secrets[gibberish]=="$DETECT_SECRET_VERSION"
+      env: 
+        DETECT_SECRET_VERSION: ${{ inputs.detect-secrets-version }}
+    - name: Check for secrets
+      shell: bash
+      run: $GITHUB_ACTION_PATH/detect-new-secrets.sh
+      env:
+        BASELINE_FILE: ${{ inputs.baseline-file }}
